@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="http://localhost:8080/ssm_framework_war_exploded/">
+    <script  src="js/jquery.js"></script>
+    <script src="js/common.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="header">
+    <table id="table1">
+        <thead>
+        <td>部门编号&nbsp;&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;部门名称&nbsp;&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;部门人数 &nbsp;&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;平均薪资</td>
+        </thead>
+    </table>
+</div>
+<div><input type="button" value="查看员工" id="selectEmp"></div>
+<div id="emp" style="display: none" >
+    <table id="table2" >
+        <thead>
+        <td>姓名&nbsp;&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;薪水&nbsp;&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;入职时间 &nbsp;&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        </thead>
+    </table>
+</div>
+</body>
+<script>
+    $(function () {
+        //解析
+        var param = parseUrl(location.href);
+        $.ajax({
+            url:"DepAndEmp/"+param["depId"],
+            type:"get",
+            dataType:"json",
+            success:function (data) {
+                console.log(data.object)
+                console.log(data.object.empList.length);
+                var count=data.object.empList.length;
+                var money=null;
+                for (var i=0;i<count;i++){
+                    money+=data.object.empList[i].salary;
+                    var emp="";
+                    emp+="<tr><td>"+data.object.empList[i].empName+"</td><td>"+data.object.empList[i].salary+"</td><td>"+data.object.empList[i].hireDate+"</td><td><input type='button' id='update"+i+"' value='编辑' empId='"+data.object.empList[i].empId+"' ></td></tr>";
+                    $("#table2").append(emp);
+                    var id=null;
+                    id=data.object.empList[i].empId;
+                    $("#update"+i).click(function (){
+                        var empId=$(this).attr("empId");
+                        console.log(empId);
+                        $.ajax({
+
+                        })
+                    })
+                }
+                console.log(money);
+                var average=(money/count).toFixed(2);
+               var thead="<tr style='text-align: center'><td>"+data.object.depId+"</td><td>"+data.object.depName+"</td><td>"+count+"</td><td>"+average+"</td></tr>";
+                $("#table1").append(thead);
+            }
+        });
+        $("#selectEmp").click(function () {
+           $("#emp").show();
+
+
+        })
+
+
+    })
+</script>
+</html>

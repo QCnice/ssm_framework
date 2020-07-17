@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="http://localhost:8080/ssm_framework_war_exploded/">
+    <meta charset="UTF-8">
+    <script  src="js/jquery.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<header id="header"> </header>
+<div id="dep">
+    <div>部门列表</div>
+
+</div>
+</body>
+<script>
+    $.ajax({
+        url:"depInfo",
+        dataType:"json",
+        type:"get",
+        success:function (data) {
+            console.log(data.list);
+            console.log(data.object);
+            if (data.object!=null){
+                $("#header").html("<div>欢迎登录,<span>"+data.object.userName+"</span></div>");
+            }
+
+            for (var i=0;i<data.list.length;i++){
+                var deplist=" ";
+                deplist+="<a href=page/DepAndEmp.html?depId="+data.list[i].depId+">"+data.list[i].depName+"</a><br>"
+                $("#dep").append(deplist);
+            }
+
+        }
+    })
+</script>
+</html>
